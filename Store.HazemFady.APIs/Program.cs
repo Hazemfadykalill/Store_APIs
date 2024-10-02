@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using Store.HazemFady.Repository.Data;
 using Store.HazemFady.Repository.Data.Contexts;
 
 namespace Store.HazemFady.APIs
@@ -23,17 +24,19 @@ namespace Store.HazemFady.APIs
 
             var app = builder.Build();
 
-            using var x =app.Services.CreateScope();
-            var service=x.ServiceProvider;
-            var context=service.GetService<StoreDbContext>();
-            var LogFactory=service.GetService<LoggerFactory>();
+            using var x = app.Services.CreateScope();
+            var service = x.ServiceProvider;
+            var context = service.GetService<StoreDbContext>();
+            var LogFactory = service.GetService<LoggerFactory>();
             try
             {
-              await  context!.Database.MigrateAsync();
-            }catch (Exception ex)
+                await context!.Database.MigrateAsync();
+                await StoreDbContextSeed.SeedAsync(context);
+            }
+            catch (Exception ex)
             {
-                var Logger= LogFactory!.CreateLogger<Program>();
-                Logger.LogError(ex,"There Are Problem When Update And Migrate Database !!!");
+                var Logger = LogFactory!.CreateLogger<Program>();
+                Logger.LogError(ex, "There Are Problem When Update And Migrate Database !!!");
 
             }
 
