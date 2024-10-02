@@ -1,7 +1,12 @@
 
 using Microsoft.EntityFrameworkCore;
+using Store.HazemFady.Core;
+using Store.HazemFady.Core.Mapping.Products;
+using Store.HazemFady.Core.Services.Contract;
+using Store.HazemFady.Repository;
 using Store.HazemFady.Repository.Data;
 using Store.HazemFady.Repository.Data.Contexts;
+using Store.HazemFady.Services.Services.Products;
 
 namespace Store.HazemFady.APIs
 {
@@ -21,7 +26,9 @@ namespace Store.HazemFady.APIs
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddAutoMapper(m=>m.AddProfile(new ProductProfile())); 
             var app = builder.Build();
 
             using var x = app.Services.CreateScope();
