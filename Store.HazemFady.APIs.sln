@@ -5,6 +5,12 @@ VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.HazemFady.APIs", "Store.HazemFady.APIs\Store.HazemFady.APIs.csproj", "{7E09D537-3C38-45C6-BA1C-5869E212BABB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.HazemFady.Core", "Store.HazemFady.Core\Store.HazemFady.Core.csproj", "{8ED3485D-36BD-420F-8F7B-4402E4BCC7C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.HazemFady.Repository", "Store.HazemFady.Repository\Store.HazemFady.Repository.csproj", "{98A8118C-3664-49BB-9D26-940826D6F825}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Store.HazemFady.Services", "Store.HazemFady.Services\Store.HazemFady.Services.csproj", "{46060EF8-1354-4BEC-A211-2B5DFAAB1A4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{7E09D537-3C38-45C6-BA1C-5869E212BABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E09D537-3C38-45C6-BA1C-5869E212BABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E09D537-3C38-45C6-BA1C-5869E212BABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ED3485D-36BD-420F-8F7B-4402E4BCC7C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ED3485D-36BD-420F-8F7B-4402E4BCC7C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ED3485D-36BD-420F-8F7B-4402E4BCC7C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ED3485D-36BD-420F-8F7B-4402E4BCC7C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98A8118C-3664-49BB-9D26-940826D6F825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98A8118C-3664-49BB-9D26-940826D6F825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98A8118C-3664-49BB-9D26-940826D6F825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98A8118C-3664-49BB-9D26-940826D6F825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46060EF8-1354-4BEC-A211-2B5DFAAB1A4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46060EF8-1354-4BEC-A211-2B5DFAAB1A4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46060EF8-1354-4BEC-A211-2B5DFAAB1A4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46060EF8-1354-4BEC-A211-2B5DFAAB1A4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
