@@ -14,7 +14,7 @@ namespace Store.HazemFady.Repository.Data.Configurations
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.Property(P => P.Name).HasMaxLength(200).IsRequired();
-            builder.Property(P => P.PictureURL).IsRequired(true);
+            builder.Property(P => P.PictureUrl).IsRequired(true);
             builder.Property(P => P.Price).HasColumnType("decimal(18,2)");
             builder.HasOne(B => B.Brand).WithMany().HasForeignKey(P => P.BrandId).OnDelete(DeleteBehavior.SetNull);
             builder.HasOne(T => T.Type).WithMany().HasForeignKey(P => P.TypeId).OnDelete(DeleteBehavior.SetNull);

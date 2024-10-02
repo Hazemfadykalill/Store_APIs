@@ -6,7 +6,7 @@ namespace Store.HazemFady.APIs
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +22,21 @@ namespace Store.HazemFady.APIs
             });
 
             var app = builder.Build();
+
+            using var x =app.Services.CreateScope();
+            var service=x.ServiceProvider;
+            var context=service.GetService<StoreDbContext>();
+            var LogFactory=service.GetService<LoggerFactory>();
+            try
+            {
+              await  context!.Database.MigrateAsync();
+            }catch (Exception ex)
+            {
+                var Logger= LogFactory!.CreateLogger<Program>();
+                Logger.LogError(ex,"There Are Problem When Update And Migrate Database !!!");
+
+            }
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
