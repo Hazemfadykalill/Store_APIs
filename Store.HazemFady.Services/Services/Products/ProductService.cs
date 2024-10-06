@@ -3,6 +3,8 @@ using Store.HazemFady.Core;
 using Store.HazemFady.Core.Dtos.Products;
 using Store.HazemFady.Core.Entities;
 using Store.HazemFady.Core.Services.Contract;
+using Store.HazemFady.Core.Specifications;
+using Store.HazemFady.Core.Specifications.Products;
 
 
 
@@ -22,12 +24,16 @@ namespace Store.HazemFady.Services.Services.Products
 
         public async  Task<IEnumerable<ProductDto>> GetAllProductAsync()
         {
+            var WithSpec = new ProductSpecification();
 
-            return mapper.Map<IEnumerable<ProductDto>>(await unitOfWork.Repository< Product, int>().GetAllAsync());
+            return mapper.Map<IEnumerable<ProductDto>>(await unitOfWork.Repository< Product, int>().GetAllWithSpecAsync(WithSpec));
         }  
         public async  Task<ProductDto> GetProductByIdAsync(int id)
         {
-           return  mapper.Map<ProductDto>(await unitOfWork.Repository<Product, int>().GetAsync(id));
+
+            var WithSpec = new ProductSpecification(id);
+
+            return mapper.Map<ProductDto>(await unitOfWork.Repository<Product, int>().GetWithSpecAsync(WithSpec));
         }
         public async  Task<IEnumerable<BrandTypeDto>> GetAllTypeAsync()
         {

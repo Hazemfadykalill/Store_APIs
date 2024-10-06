@@ -60,7 +60,7 @@ namespace Store.HazemFady.Repository.Repositories
         {
             await storeDb.AddAsync(entity);
         }
-
+          
         public void Update(TEntity entity)
         {
             storeDb.Update(entity);

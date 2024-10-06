@@ -18,5 +18,10 @@ namespace Store.HazemFady.Core.Specifications
             Criteria = expression;
                 
         }
+
+        public BaseSpecification()
+        {
+                
+        }
     }
 }
