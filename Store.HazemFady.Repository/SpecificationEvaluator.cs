@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Store.HazemFady.Core.Entities;
 using Store.HazemFady.Core.Specifications;
@@ -36,6 +36,11 @@ namespace Store.HazemFady.Repository
 
                 Query = Query.OrderBy(Spec.OrderByDescending);
 
+            }
+
+            if (Spec.IsPaginationEnabled)
+            {
+                Query =  Query.Skip(Spec.Skip).Take(Spec.Take);
             }
             Query =Spec.Includes.Aggregate(Query, (CurrentQuery, IncludeExpression) => CurrentQuery.Include(IncludeExpression));
 

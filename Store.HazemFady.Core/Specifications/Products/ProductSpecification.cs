@@ -10,7 +10,7 @@ namespace Store.HazemFady.Core.Specifications.Products
     public class ProductSpecification : BaseSpecification<Product, int>
     {
 
-        public ProductSpecification(string? sort)
+        public ProductSpecification(string? sort, int PageSize, int PageIndex)
         {
 
             Criteria = null;
@@ -44,6 +44,10 @@ namespace Store.HazemFady.Core.Specifications.Products
             //Includes.Add(P => P.Type);
 
             ApplyIncludes();
+
+            //page size 50
+            //page index 3
+            ApplyPagination(PageSize*(PageIndex-1),PageSize);
 
         }
 

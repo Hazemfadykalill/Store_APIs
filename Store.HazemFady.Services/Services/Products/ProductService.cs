@@ -22,9 +22,9 @@ namespace Store.HazemFady.Services.Services.Products
             this.mapper = mapper;
         }
 
-        public async  Task<IEnumerable<ProductDto>> GetAllProductAsync( string? sort)
+        public async  Task<IEnumerable<ProductDto>> GetAllProductAsync( string? sort, int? PageSize, int? PageIndex)
         {
-            var WithSpec = new ProductSpecification(sort);
+            var WithSpec = new ProductSpecification(sort, PageSize.Value,PageIndex.Value);
 
             return mapper.Map<IEnumerable<ProductDto>>(await unitOfWork.Repository< Product, int>().GetAllWithSpecAsync(WithSpec));
         }  
