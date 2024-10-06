@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Store.HazemFady.Core.Entities;
 using Store.HazemFady.Core.Repositories.Contract;
+using Store.HazemFady.Core.Specifications;
 using Store.HazemFady.Repository.Data.Contexts;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace Store.HazemFady.Repository.Repositories
             this.storeDb = storeDb;
         }
 
+
+        //Without Spec
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             if (typeof(TEntity) == typeof(Product))
@@ -30,6 +33,14 @@ namespace Store.HazemFady.Repository.Repositories
         }
 
 
+        //With Spec
+        public async  Task<IEnumerable<TEntity>> GetAllWithSpecAsync(ISpecification<TEntity, TKey> Spec)
+        {
+           return await ApplySpecification(Spec).ToListAsync();    
+        }
+
+
+
         public async Task<TEntity> GetAsync(TKey id)
         {
             if (typeof(TEntity) == typeof(Product))
@@ -38,6 +49,12 @@ namespace Store.HazemFady.Repository.Repositories
 
             }
             return await storeDb.Set<TEntity>().FindAsync(id);
+        }
+
+        public async  Task<TEntity> GetWithSpecAsync(ISpecification<TEntity, TKey> Spec)
+        {
+            return await ApplySpecification(Spec).FirstOrDefaultAsync();
+
         }
         public async Task AddAsync(TEntity entity)
         {
@@ -55,9 +72,9 @@ namespace Store.HazemFady.Repository.Repositories
 
         }
 
-
-
-
-
+        private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity, TKey> Spec)
+        {
+            return SpecificationEvaluator<TEntity, TKey>.GetQuery(storeDb.Set<TEntity>(), Spec);
+        }
     }
 }
