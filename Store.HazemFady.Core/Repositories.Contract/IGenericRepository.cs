@@ -19,6 +19,7 @@ namespace Store.HazemFady.Core.Repositories.Contract
         Task AddAsync(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);
+        Task<int>  GetCount(ISpecification<TEntity, TKey> specification);
 
     }
 }

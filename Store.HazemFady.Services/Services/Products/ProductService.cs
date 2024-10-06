@@ -2,6 +2,7 @@
 using Store.HazemFady.Core;
 using Store.HazemFady.Core.Dtos.Products;
 using Store.HazemFady.Core.Entities;
+using Store.HazemFady.Core.Paginations;
 using Store.HazemFady.Core.Services.Contract;
 using Store.HazemFady.Core.Specifications;
 using Store.HazemFady.Core.Specifications.Products;
@@ -22,11 +23,18 @@ namespace Store.HazemFady.Services.Services.Products
             this.mapper = mapper;
         }
 
-        public async  Task<IEnumerable<ProductDto>> GetAllProductAsync( string? sort, int? PageSize, int? PageIndex)
+        public async  Task<PaginationResponse<ProductDto>> GetAllProductAsync( ProductSpecParams specParams)
         {
-            var WithSpec = new ProductSpecification(sort, PageSize.Value,PageIndex.Value);
+            var WithSpec = new ProductSpecification(specParams);
+            var Products = await unitOfWork.Repository<Product, int>().GetAllWithSpecAsync(WithSpec);
+            var mappedProduct = mapper.Map<IEnumerable<ProductDto>>(Products);
 
-            return mapper.Map<IEnumerable<ProductDto>>(await unitOfWork.Repository< Product, int>().GetAllWithSpecAsync(WithSpec));
+            //var countSpec = new ProductWithCountSpecification(specParams);
+            //var Count = await unitOfWork.Repository<Product, int>().GetCount(countSpec);
+
+
+
+            return new PaginationResponse<ProductDto>(specParams.PageSize, specParams.PageIndex, 0, mappedProduct);
         }  
         public async  Task<ProductDto> GetProductByIdAsync(int id)
         {

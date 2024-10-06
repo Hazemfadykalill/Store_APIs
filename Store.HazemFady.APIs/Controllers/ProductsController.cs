@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.HazemFady.Core.Dtos.Products;
+using Store.HazemFady.Core.Paginations;
 using Store.HazemFady.Core.Services.Contract;
+using Store.HazemFady.Core.Specifications.Products;
 
 namespace Store.HazemFady.APIs.Controllers
 {
@@ -17,9 +20,9 @@ namespace Store.HazemFady.APIs.Controllers
         [HttpGet("AllProduct")]//BaseUrl/api/NameControler
 
         
-        public async  Task<IActionResult> GetAllProduct([FromQuery] string? sort, [FromQuery] int? PageSize=5, [FromQuery] int? PageIndex=1)//End Point
+        public async  Task<IActionResult> GetAllProduct([FromQuery] ProductSpecParams specParams)//End Point
         {
-           var Result = await productService.GetAllProductAsync(sort,PageSize,PageIndex);
+           var Result = await productService.GetAllProductAsync(specParams);
             return Ok(Result);
         }
         [HttpGet("AllBrand")]//BaseUrl/api/NameControler

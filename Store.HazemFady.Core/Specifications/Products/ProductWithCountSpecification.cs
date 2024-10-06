@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Store.HazemFady.Core.Specifications.Products
 {
-    public class ProductSpecification : BaseSpecification<Product, int>
+    public  class ProductWithCountSpecification:BaseSpecification<Product,int>
     {
 
-        public ProductSpecification(ProductSpecParams productSpecParams)
+        public ProductWithCountSpecification(ProductSpecParams productSpecParams)
         {
 
             Criteria = null;
@@ -21,16 +21,16 @@ namespace Store.HazemFady.Core.Specifications.Products
                 {
                     case "priceAsc":
                         AddOrderBy(p => p.Price);
-                       
+
                         break;
                     case "priceDesc":
-                        AddOrderByDesc(p => p.Price); 
+                        AddOrderByDesc(p => p.Price);
                         break;
                     default:
 
                         AddOrderBy(p => p.Name);
 
-                        break; 
+                        break;
 
 
                 }
@@ -47,25 +47,9 @@ namespace Store.HazemFady.Core.Specifications.Products
 
             //page size 50
             //page index 3
-            ApplyPagination(productSpecParams.PageSize*(productSpecParams.PageIndex-1),productSpecParams.PageSize);
+            ApplyPagination(productSpecParams.PageSize * (productSpecParams.PageIndex - 1), productSpecParams.PageSize);
 
         }
 
-        public ProductSpecification(int id)
-        {
-
-            Criteria = P => P.Id == id;
-            //Includes.Add(P => P.Brand);
-            //Includes.Add(P => P.Type);
-
-            ApplyIncludes();
-        }
-
-        private void ApplyIncludes()
-        {
-            Includes.Add(P => P.Brand);
-            Includes.Add(P => P.Type);
-
-        }
     }
 }

@@ -34,9 +34,9 @@ namespace Store.HazemFady.Repository.Repositories
 
 
         //With Spec
-        public async  Task<IEnumerable<TEntity>> GetAllWithSpecAsync(ISpecification<TEntity, TKey> Spec)
+        public async Task<IEnumerable<TEntity>> GetAllWithSpecAsync(ISpecification<TEntity, TKey> Spec)
         {
-           return await ApplySpecification(Spec).ToListAsync();    
+            return await ApplySpecification(Spec).ToListAsync();
         }
 
 
@@ -51,7 +51,7 @@ namespace Store.HazemFady.Repository.Repositories
             return await storeDb.Set<TEntity>().FindAsync(id);
         }
 
-        public async  Task<TEntity> GetWithSpecAsync(ISpecification<TEntity, TKey> Spec)
+        public async Task<TEntity> GetWithSpecAsync(ISpecification<TEntity, TKey> Spec)
         {
             return await ApplySpecification(Spec).FirstOrDefaultAsync();
 
@@ -60,7 +60,7 @@ namespace Store.HazemFady.Repository.Repositories
         {
             await storeDb.AddAsync(entity);
         }
-          
+
         public void Update(TEntity entity)
         {
             storeDb.Update(entity);
@@ -75,6 +75,12 @@ namespace Store.HazemFady.Repository.Repositories
         private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity, TKey> Spec)
         {
             return SpecificationEvaluator<TEntity, TKey>.GetQuery(storeDb.Set<TEntity>(), Spec);
+        }
+
+        public async Task<int> GetCount(ISpecification<TEntity, TKey> specification)
+        {
+            return await ApplySpecification(specification).CountAsync();
+
         }
     }
 }
