@@ -23,7 +23,21 @@ namespace Store.HazemFady.Repository
             {
                 Query = Query.Where(Spec.Criteria);
             }
-            Query=Spec.Includes.Aggregate(Query, (CurrentQuery, IncludeExpression) => CurrentQuery.Include(IncludeExpression));
+
+            if ( Spec.OrderBy is not null)
+            {
+
+                Query = Query.OrderBy(Spec.OrderBy);  
+
+            }
+
+            if (Spec.OrderByDescending is not null)
+            {
+
+                Query = Query.OrderBy(Spec.OrderByDescending);
+
+            }
+            Query =Spec.Includes.Aggregate(Query, (CurrentQuery, IncludeExpression) => CurrentQuery.Include(IncludeExpression));
 
 
             return Query;

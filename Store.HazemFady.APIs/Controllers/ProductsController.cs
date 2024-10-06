@@ -15,9 +15,11 @@ namespace Store.HazemFady.APIs.Controllers
             this.productService = productService;
         }
         [HttpGet("AllProduct")]//BaseUrl/api/NameControler
-        public async  Task<IActionResult> GetAllProduct()//End Point
+
+        
+        public async  Task<IActionResult> GetAllProduct([FromQuery] string? sort )//End Point
         {
-           var Result = await productService.GetAllProductAsync();
+           var Result = await productService.GetAllProductAsync(sort);
             return Ok(Result);
         }
         [HttpGet("AllBrand")]//BaseUrl/api/NameControler

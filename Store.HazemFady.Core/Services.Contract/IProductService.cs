@@ -11,7 +11,7 @@ namespace Store.HazemFady.Core.Services.Contract
     public interface IProductService
     {
 
-        Task<IEnumerable<ProductDto>> GetAllProductAsync();
+        Task<IEnumerable<ProductDto>> GetAllProductAsync(string?sort);
         Task<IEnumerable<BrandTypeDto>> GetAllBrandAsync();
         Task<IEnumerable<BrandTypeDto>> GetAllTypeAsync();
         Task<ProductDto> GetProductByIdAsync(int id);

@@ -7,13 +7,39 @@ using System.Threading.Tasks;
 
 namespace Store.HazemFady.Core.Specifications.Products
 {
-    public  class ProductSpecification:BaseSpecification<Product,int>
+    public class ProductSpecification : BaseSpecification<Product, int>
     {
 
-        public ProductSpecification()
+        public ProductSpecification(string? sort)
         {
 
             Criteria = null;
+
+            if (!string.IsNullOrEmpty(sort))
+            {
+                switch (sort)
+                {
+                    case "priceAsc":
+                        AddOrderBy(p => p.Price);
+                       
+                        break;
+                    case "priceDesc":
+                        AddOrderByDesc(p => p.Price); 
+                        break;
+                    default:
+
+                        AddOrderBy(p => p.Name);
+
+                        break; 
+
+
+                }
+
+            }
+            else
+            {
+                OrderBy = p => p.Name;
+            }
             //Includes.Add(P => P.Brand);
             //Includes.Add(P => P.Type);
 
@@ -24,7 +50,7 @@ namespace Store.HazemFady.Core.Specifications.Products
         public ProductSpecification(int id)
         {
 
-            Criteria = P=>P.Id==id;
+            Criteria = P => P.Id == id;
             //Includes.Add(P => P.Brand);
             //Includes.Add(P => P.Type);
 
