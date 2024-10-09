@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Store.HazemFady.APIs.Errors;
+using Store.HazemFady.APIs.MiddleWares;
 using Store.HazemFady.Core;
 using Store.HazemFady.Core.Mapping.Products;
 using Store.HazemFady.Core.Services.Contract;
@@ -72,7 +73,7 @@ namespace Store.HazemFady.APIs
 
             }
 
-
+             app.UseMiddleware <ExceptionMiddleWare>();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
