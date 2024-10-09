@@ -45,7 +45,7 @@ namespace Store.HazemFady.APIs.Controllers
         [HttpGet("BadRequest/{id}")]
         public IActionResult GetBadRequestError(int id)//Validation Error
         {
-
+           
 
             return Ok();
         }

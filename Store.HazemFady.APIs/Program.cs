@@ -1,5 +1,7 @@
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Store.HazemFady.APIs.Errors;
 using Store.HazemFady.Core;
 using Store.HazemFady.Core.Mapping.Products;
 using Store.HazemFady.Core.Services.Contract;
@@ -28,7 +30,30 @@ namespace Store.HazemFady.APIs
             });
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(m=>m.AddProfile(new ProductProfile(builder.Configuration))); 
+            builder.Services.AddAutoMapper(m=>m.AddProfile(new ProductProfile(builder.Configuration)));
+            builder.Services.Configure<ApiBehaviorOptions>
+                (
+                options =>
+                {
+                    options.InvalidModelStateResponseFactory = (actionContext) =>
+                    {
+                        var Errors = actionContext.ModelState.Where(P => P.Value!.Errors.Count() > 0)
+                                                           .SelectMany(P => P.Value!.Errors)
+                                                           .Select(E => E.ErrorMessage)
+                                                           .ToArray();
+
+                        var Response = new APIValidationErrorResponse()
+                        {
+                            Errors = Errors
+                        };
+                        return new BadRequestObjectResult(Response);    
+                    };
+                    
+                }
+                
+                );
+
+
             var app = builder.Build();
 
             using var x = app.Services.CreateScope();
