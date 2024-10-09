@@ -80,6 +80,8 @@ namespace Store.HazemFady.APIs
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
