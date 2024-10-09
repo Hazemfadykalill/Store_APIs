@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.HazemFady.APIs.Errors;
 using Store.HazemFady.Repository.Data.Contexts;
 
 namespace Store.HazemFady.APIs.Controllers
@@ -19,7 +20,7 @@ namespace Store.HazemFady.APIs.Controllers
         {
             var brands=await storeDb.Brands.FindAsync(100);
             if (brands == null) 
-                return NotFound(new {Message="Brand With Id :100 is not Found",StatusCode=StatusCodes.Status404NotFound});
+                return NotFound(new APIErrorResponse(404));
 
             return Ok(brands);
         }
@@ -38,7 +39,7 @@ namespace Store.HazemFady.APIs.Controllers
         {
       
 
-            return BadRequest();
+            return BadRequest(new APIErrorResponse(400));
         }
 
         [HttpGet("BadRequest/{id}")]
@@ -55,7 +56,7 @@ namespace Store.HazemFady.APIs.Controllers
         {
 
 
-            return Unauthorized();
+            return Unauthorized(new APIErrorResponse(401));
         }
 
 
