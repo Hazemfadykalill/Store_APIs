@@ -7,6 +7,10 @@ using Store.HazemFady.Services.Services.Products;
 using Store.HazemFady.Core.Mapping.Products;
 using Microsoft.AspNetCore.Mvc;
 using Store.HazemFady.APIs.Errors;
+using Store.HazemFady.Core.Mapping.Baskets;
+using Store.HazemFady.Core.Repositories.Contract;
+using Store.HazemFady.Repository.Repositories;
+using StackExchange.Redis;
 
 namespace Store.HazemFady.APIs.SharedProgram
 {
@@ -15,7 +19,7 @@ namespace Store.HazemFady.APIs.SharedProgram
 
 
 
-        public static IServiceCollection AddDependency(this IServiceCollection services,IConfiguration configuration)
+        public static IServiceCollection AddDependency(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddBuiltInServcies();
             services.AddSwaggerServcies();
@@ -23,6 +27,7 @@ namespace Store.HazemFady.APIs.SharedProgram
             services.AddUserDefinedServcies();
             services.AddAutoMapperServcies(configuration);
             services.ConfigureInvalidModelStateResponseServcies();
+            services.AddRedisServcies(configuration);
             return services;
 
         }
@@ -54,6 +59,7 @@ namespace Store.HazemFady.APIs.SharedProgram
 
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IBasketRepository, BasketRepository>();
             return services;
 
         }
@@ -61,6 +67,7 @@ namespace Store.HazemFady.APIs.SharedProgram
         {
 
             services.AddAutoMapper(m => m.AddProfile(new ProductProfile(configuration)));
+            services.AddAutoMapper(m => m.AddProfile(new BasketProfile()));
             return services;
 
         }
@@ -88,6 +95,19 @@ namespace Store.HazemFady.APIs.SharedProgram
     }
 
     );
+            return services;
+
+        }
+
+
+        private static IServiceCollection AddRedisServcies(this IServiceCollection services,IConfiguration configuration)
+        {
+
+            services.AddSingleton<IConnectionMultiplexer>((serviceProvider) =>
+            {
+                var connect = configuration.GetConnectionString("Redis");
+                return ConnectionMultiplexer.Connect(connect);
+            });
             return services;
 
         }
