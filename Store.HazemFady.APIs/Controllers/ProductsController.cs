@@ -7,9 +7,8 @@ using Store.HazemFady.Core.Specifications.Products;
 
 namespace Store.HazemFady.APIs.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductsController : ControllerBase
+
+    public class ProductsController : BaseAPIController
     {
         private readonly IProductService productService;
 

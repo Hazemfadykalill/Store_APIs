@@ -5,9 +5,8 @@ using Store.HazemFady.Repository.Data.Contexts;
 
 namespace Store.HazemFady.APIs.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BuggyController : ControllerBase
+ 
+    public class BuggyController : BaseAPIController
     {
         private readonly StoreDbContext storeDb;
 
