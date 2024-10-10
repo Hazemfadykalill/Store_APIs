@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Store.HazemFady.APIs.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+  
+    public class WeatherForecastController : BaseAPIController
     {
         private static readonly string[] Summaries = new[]
         {
