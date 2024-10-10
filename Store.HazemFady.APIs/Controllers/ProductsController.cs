@@ -17,11 +17,11 @@ namespace Store.HazemFady.APIs.Controllers
         {
             this.productService = productService;
         }
-        [ProducesResponseType(typeof(PaginationResponse<ProductDto>),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PaginationResponse<ProductDto>), StatusCodes.Status200OK)]
         [HttpGet("AllProduct")]//BaseUrl/api/NameControler
-        public async  Task<ActionResult<PaginationResponse<ProductDto>>> GetAllProduct([FromQuery] ProductSpecParams specParams)//End Point
+        public async Task<ActionResult<PaginationResponse<ProductDto>>> GetAllProduct([FromQuery] ProductSpecParams specParams)//End Point
         {
-           var Result = await productService.GetAllProductAsync(specParams);
+            var Result = await productService.GetAllProductAsync(specParams);
             return Ok(Result);
         }
         [ProducesResponseType(typeof(IEnumerable<BrandTypeDto>), StatusCodes.Status200OK)]
@@ -50,13 +50,13 @@ namespace Store.HazemFady.APIs.Controllers
         [HttpGet("{id}")]//BaseUrl/api/NameControler
         public async Task<IActionResult> GetProductById(int? id)//End Point
         {
-            if(id == null)
+            if (id == null)
             {
                 return BadRequest(new APIErrorResponse(400));
             }
             var Result = await productService.GetProductByIdAsync(id.Value);
 
-            if(Result is null)
+            if (Result is null)
             {
                 return NotFound(new APIErrorResponse(404));
             }
