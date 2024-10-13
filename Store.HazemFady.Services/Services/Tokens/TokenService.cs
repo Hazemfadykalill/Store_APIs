@@ -31,19 +31,13 @@ namespace Store.HazemFady.Services.Services.Tokens
             //2.PayLoad
             //3.Signature
 
-            //          "JWT": {
-            //              "Key": "StrongAuthSecurityStrongAuthSecurityStrongAuthSecurityAnyKeyName",
-            //  "Issure": "https://localhost:7039/",
-            //  "Audience": "MyStoreApp",
-            //  "DurationInDay": "2"
-            //}
             var UserRoles=await userManager.GetRolesAsync(APPUser);
             var authClaims=new List<Claim>()
             {
-                new Claim(ClaimTypes.Email,APPUser.Email),
+                new Claim(ClaimTypes.Email,APPUser.Email!),
                 new Claim(ClaimTypes.GivenName,APPUser.DisplayName),
-                new Claim(ClaimTypes.MobilePhone,APPUser.PhoneNumber),
-                new Claim(ClaimTypes.MobilePhone,APPUser.PhoneNumber),
+                new Claim(ClaimTypes.MobilePhone,APPUser.PhoneNumber!),
+                new Claim(ClaimTypes.MobilePhone,APPUser.PhoneNumber!),
             };
 
             foreach (var Role in UserRoles)
@@ -60,7 +54,8 @@ namespace Store.HazemFady.Services.Services.Tokens
                 audience: configuration["JWT:Audience"],
                 expires:DateTime.Now.AddDays(double.Parse(configuration["JWT:DurationInDay"])),
                 claims:authClaims,
-                signingCredentials:new SigningCredentials(AuthKey,SecurityAlgorithms.EcdsaSha256Signature)
+                signingCredentials:new SigningCredentials(AuthKey,SecurityAlgorithms.HmacSha256)
+                //signingCredentials:new SigningCredentials(AuthKey,SecurityAlgorithms.EcdsaSha256Signature)
 
                 );
 
