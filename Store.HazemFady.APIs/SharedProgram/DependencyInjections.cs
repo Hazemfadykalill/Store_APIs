@@ -13,6 +13,9 @@ using Store.HazemFady.Repository.Repositories;
 using StackExchange.Redis;
 using Store.HazemFady.APIs.Attributes;
 using Store.HazemFady.Services.Services.Caches;
+using Store.HazemFady.Repository.Identity.Contexts;
+using Store.HazemFady.Core.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Store.HazemFady.APIs.SharedProgram
 {
@@ -30,6 +33,7 @@ namespace Store.HazemFady.APIs.SharedProgram
             services.AddAutoMapperServcies(configuration);
             services.ConfigureInvalidModelStateResponseServcies();
             services.AddRedisServcies(configuration);
+            services.IdentityService();
             return services;
 
         }
@@ -52,6 +56,11 @@ namespace Store.HazemFady.APIs.SharedProgram
             services.AddDbContext<StoreDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            services.AddDbContext<StoreIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("IdentityConnection"));
             });
             return services;
 
@@ -111,6 +120,15 @@ namespace Store.HazemFady.APIs.SharedProgram
                 var connect = configuration.GetConnectionString("Redis");
                 return ConnectionMultiplexer.Connect(connect);
             });
+            return services;
+
+        }
+
+
+        private static IServiceCollection IdentityService(this IServiceCollection services)
+        {
+            services.AddIdentity<APPUser, IdentityRole>().AddEntityFrameworkStores<StoreIdentityDbContext>(); 
+
             return services;
 
         }

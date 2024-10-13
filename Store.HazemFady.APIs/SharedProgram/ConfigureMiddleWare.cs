@@ -5,6 +5,10 @@ using Store.HazemFady.APIs.MiddleWares;
 using Store.HazemFady.Repository.Data.Contexts;
 using Store.HazemFady.Repository.Data;
 using Microsoft.EntityFrameworkCore;
+using Store.HazemFady.Repository.Identity.Contexts;
+using Store.HazemFady.Repository.Identity;
+using Microsoft.AspNetCore.Identity;
+using Store.HazemFady.Core.Entities.Identity;
 
 namespace Store.HazemFady.APIs.SharedProgram
 {
@@ -15,12 +19,20 @@ namespace Store.HazemFady.APIs.SharedProgram
         {
             using var x = app.Services.CreateScope();
             var service = x.ServiceProvider;
-            var context = service.GetService<StoreDbContext>();
+            var context = service.GetRequiredService<StoreDbContext>();
+            var contextIdentity = service.GetRequiredService<StoreIdentityDbContext>();
+            var userManger = service.GetRequiredService<UserManager<APPUser>>();
             var LogFactory = service.GetService<LoggerFactory>();
             try
             {
                 await context!.Database.MigrateAsync();
                 await StoreDbContextSeed.SeedAsync(context);
+
+                await contextIdentity!.Database.MigrateAsync();
+                await StoreIdentityDbContextSeed.SeedAPPUserAsync(userManger);
+              
+
+
             }
             catch (Exception ex)
             {
