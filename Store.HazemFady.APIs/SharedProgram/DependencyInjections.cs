@@ -16,6 +16,8 @@ using Store.HazemFady.Services.Services.Caches;
 using Store.HazemFady.Repository.Identity.Contexts;
 using Store.HazemFady.Core.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
+using Store.HazemFady.Services.Services.Tokens;
+using Store.HazemFady.Services.Services.Users;
 
 namespace Store.HazemFady.APIs.SharedProgram
 {
@@ -71,6 +73,8 @@ namespace Store.HazemFady.APIs.SharedProgram
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICashService,CacheService>();
+            services.AddScoped<ITokenService,TokenService>();
+            services.AddScoped<IUserService,UserService>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             return services;
 
