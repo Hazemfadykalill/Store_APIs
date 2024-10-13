@@ -53,6 +53,7 @@ namespace Store.HazemFady.APIs.SharedProgram
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

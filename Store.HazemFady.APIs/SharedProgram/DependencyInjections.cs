@@ -18,6 +18,10 @@ using Store.HazemFady.Core.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Store.HazemFady.Services.Services.Tokens;
 using Store.HazemFady.Services.Services.Users;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Store.HazemFady.APIs.SharedProgram
 {
@@ -36,6 +40,7 @@ namespace Store.HazemFady.APIs.SharedProgram
             services.ConfigureInvalidModelStateResponseServcies();
             services.AddRedisServcies(configuration);
             services.IdentityService();
+            services.AddAuthenticationService(configuration);
             return services;
 
         }
@@ -132,6 +137,30 @@ namespace Store.HazemFady.APIs.SharedProgram
         private static IServiceCollection IdentityService(this IServiceCollection services)
         {
             services.AddIdentity<APPUser, IdentityRole>().AddEntityFrameworkStores<StoreIdentityDbContext>(); 
+
+            return services;
+
+        }
+
+        private static IServiceCollection AddAuthenticationService(this IServiceCollection services,IConfiguration configuration)
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme=JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme=JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(option =>
+            {
+                option.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer=true,
+                    ValidIssuer = configuration["JWT:Issure"],
+                    ValidateAudience=true,
+                    ValidAudience= configuration["JWT:Audience"],
+                    ValidateLifetime=true,
+                    ValidateIssuerSigningKey=true,
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]))
+                };
+            });
 
             return services;
 
