@@ -11,6 +11,8 @@ using Store.HazemFady.Core.Mapping.Baskets;
 using Store.HazemFady.Core.Repositories.Contract;
 using Store.HazemFady.Repository.Repositories;
 using StackExchange.Redis;
+using Store.HazemFady.APIs.Attributes;
+using Store.HazemFady.Services.Services.Caches;
 
 namespace Store.HazemFady.APIs.SharedProgram
 {
@@ -59,6 +61,7 @@ namespace Store.HazemFady.APIs.SharedProgram
 
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICashService,CacheService>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             return services;
 

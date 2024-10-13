@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.HazemFady.APIs.Attributes;
 using Store.HazemFady.APIs.Errors;
 using Store.HazemFady.Core.Dtos.Products;
 using Store.HazemFady.Core.Paginations;
@@ -19,6 +20,7 @@ namespace Store.HazemFady.APIs.Controllers
         }
         [ProducesResponseType(typeof(PaginationResponse<ProductDto>), StatusCodes.Status200OK)]
         [HttpGet("AllProduct")]//BaseUrl/api/NameControler
+        [Cached(100)]
         public async Task<ActionResult<PaginationResponse<ProductDto>>> GetAllProduct([FromQuery] ProductSpecParams specParams)//End Point
         {
             var Result = await productService.GetAllProductAsync(specParams);
