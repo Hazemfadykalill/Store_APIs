@@ -12,5 +12,7 @@ namespace Store.HazemFady.Core.Services.Contract
 
         Task<UserResponseAfterLoginDTO> LoginAsync(LoginDTO loginDTO);
         Task<UserResponseAfterLoginDTO> RegisterAsync(RegisterDTO registerDTO);
+
+        Task<bool> CheckEmailExitsAsync(string email);
     }
 }

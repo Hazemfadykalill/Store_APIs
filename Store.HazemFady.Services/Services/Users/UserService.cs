@@ -22,6 +22,9 @@ namespace Store.HazemFady.Services.Services.Users
             this.signInManger = signInManger;
             this.tokenService = tokenService;
         }
+
+
+
         //this method not end point
         public async Task<UserResponseAfterLoginDTO> LoginAsync(LoginDTO loginDTO)
         {
@@ -41,9 +44,30 @@ namespace Store.HazemFady.Services.Services.Users
 
         }
         //this method not end point
-        public Task<UserResponseAfterLoginDTO> RegisterAsync(RegisterDTO registerDTO)
+        public async Task<UserResponseAfterLoginDTO> RegisterAsync(RegisterDTO registerDTO)
         {
-            throw new NotImplementedException();
+            if (await CheckEmailExitsAsync(registerDTO.Email)) return null!;
+            var appUser = new APPUser()
+            {
+                Email = registerDTO.Email,
+                PhoneNumber = registerDTO.PhoneNumber,
+                DisplayName = registerDTO.DisplayName,
+                UserName = registerDTO.Email.Split("@")[0]
+            };
+            var Result = await userManager.CreateAsync(appUser, registerDTO.Password);
+            if (!Result.Succeeded) return null!;
+            return new UserResponseAfterLoginDTO()
+            {
+
+                DisplayName = registerDTO.DisplayName,
+                Email = registerDTO.Email,
+                Token = await tokenService.CreateTokenAsync(appUser, userManager)
+            };
+        }
+
+        public async Task<bool> CheckEmailExitsAsync(string email)
+        {
+            return await userManager.FindByEmailAsync(email) is not null;
         }
     }
 }
