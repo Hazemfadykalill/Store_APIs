@@ -22,6 +22,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Store.HazemFady.Core.Mapping.Auth;
 
 namespace Store.HazemFady.APIs.SharedProgram
 {
@@ -89,6 +90,7 @@ namespace Store.HazemFady.APIs.SharedProgram
 
             services.AddAutoMapper(m => m.AddProfile(new ProductProfile(configuration)));
             services.AddAutoMapper(m => m.AddProfile(new BasketProfile()));
+            services.AddAutoMapper(m => m.AddProfile( new AuthProfile()));
             return services;
 
         }
