@@ -70,5 +70,19 @@ namespace Store.HazemFady.APIs.Controllers
             if (user == null) return BadRequest(new APIErrorResponse(StatusCodes.Status400BadRequest));
             return Ok(mapper.Map<AddressDTO>(user.Address));
         }
+
+
+        //[Authorize]
+        ////To Update Address To Current User
+        //[HttpPut("UpdateAddress")]
+        //public async Task<ActionResult<UserResponseAfterLoginDTO>> UpdateAddressToCurrentUser()
+        //{
+
+        //    //Note this FindByEmailAsync Not Load Navigational Property .
+        //    var user = await userManager.FindByEmailWithAddressAsync(User);
+        //    if (user == null) return BadRequest(new APIErrorResponse(StatusCodes.Status400BadRequest));
+        //    return Ok(mapper.Map<AddressDTO>(user.Address));
+        //}
+
     }
 }
