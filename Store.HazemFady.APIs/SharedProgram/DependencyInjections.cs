@@ -11,6 +11,18 @@ using Store.HazemFady.Core.Mapping.Baskets;
 using Store.HazemFady.Core.Repositories.Contract;
 using Store.HazemFady.Repository.Repositories;
 using StackExchange.Redis;
+using Store.HazemFady.APIs.Attributes;
+using Store.HazemFady.Services.Services.Caches;
+using Store.HazemFady.Repository.Identity.Contexts;
+using Store.HazemFady.Core.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
+using Store.HazemFady.Services.Services.Tokens;
+using Store.HazemFady.Services.Services.Users;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Store.HazemFady.Core.Mapping.Auth;
 
 namespace Store.HazemFady.APIs.SharedProgram
 {
@@ -28,6 +40,8 @@ namespace Store.HazemFady.APIs.SharedProgram
             services.AddAutoMapperServcies(configuration);
             services.ConfigureInvalidModelStateResponseServcies();
             services.AddRedisServcies(configuration);
+            services.IdentityService();
+            services.AddAuthenticationService(configuration);
             return services;
 
         }
@@ -51,6 +65,11 @@ namespace Store.HazemFady.APIs.SharedProgram
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddDbContext<StoreIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("IdentityConnection"));
+            });
             return services;
 
         }
@@ -59,6 +78,9 @@ namespace Store.HazemFady.APIs.SharedProgram
 
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICashService,CacheService>();
+            services.AddScoped<ITokenService,TokenService>();
+            services.AddScoped<IUserService,UserService>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             return services;
 
@@ -68,6 +90,7 @@ namespace Store.HazemFady.APIs.SharedProgram
 
             services.AddAutoMapper(m => m.AddProfile(new ProductProfile(configuration)));
             services.AddAutoMapper(m => m.AddProfile(new BasketProfile()));
+            services.AddAutoMapper(m => m.AddProfile( new AuthProfile()));
             return services;
 
         }
@@ -108,6 +131,39 @@ namespace Store.HazemFady.APIs.SharedProgram
                 var connect = configuration.GetConnectionString("Redis");
                 return ConnectionMultiplexer.Connect(connect);
             });
+            return services;
+
+        }
+
+
+        private static IServiceCollection IdentityService(this IServiceCollection services)
+        {
+            services.AddIdentity<APPUser, IdentityRole>().AddEntityFrameworkStores<StoreIdentityDbContext>(); 
+
+            return services;
+
+        }
+
+        private static IServiceCollection AddAuthenticationService(this IServiceCollection services,IConfiguration configuration)
+        {
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme=JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme=JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(option =>
+            {
+                option.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer=true,
+                    ValidIssuer = configuration["JWT:Issure"],
+                    ValidateAudience=true,
+                    ValidAudience= configuration["JWT:Audience"],
+                    ValidateLifetime=true,
+                    ValidateIssuerSigningKey=true,
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]))
+                };
+            });
+
             return services;
 
         }

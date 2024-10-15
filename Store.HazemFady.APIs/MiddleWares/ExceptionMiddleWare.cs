@@ -29,7 +29,9 @@ namespace Store.HazemFady.APIs.MiddleWares
                 context.Response.ContentType = "Application/json";
                 context.Response.StatusCode =StatusCodes.Status500InternalServerError;
                 var res =env.IsDevelopment()?new APIExceptionErrorResponse(StatusCodes.Status500InternalServerError , Ex.Message , Ex.StackTrace!.ToString()): new APIExceptionErrorResponse(StatusCodes.Status500InternalServerError);
-                var response= JsonSerializer.Serialize(res);
+                var Options = new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+                var response = JsonSerializer.Serialize(res, Options);
                 await context.Response.WriteAsync(response);
              
             }

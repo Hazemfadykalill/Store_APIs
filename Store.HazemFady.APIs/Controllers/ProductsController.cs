@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.HazemFady.APIs.Attributes;
 using Store.HazemFady.APIs.Errors;
 using Store.HazemFady.Core.Dtos.Products;
 using Store.HazemFady.Core.Paginations;
@@ -19,6 +21,8 @@ namespace Store.HazemFady.APIs.Controllers
         }
         [ProducesResponseType(typeof(PaginationResponse<ProductDto>), StatusCodes.Status200OK)]
         [HttpGet("AllProduct")]//BaseUrl/api/NameControler
+        [Cached(100)]
+        [Authorize]
         public async Task<ActionResult<PaginationResponse<ProductDto>>> GetAllProduct([FromQuery] ProductSpecParams specParams)//End Point
         {
             var Result = await productService.GetAllProductAsync(specParams);
@@ -27,6 +31,8 @@ namespace Store.HazemFady.APIs.Controllers
         [ProducesResponseType(typeof(IEnumerable<BrandTypeDto>), StatusCodes.Status200OK)]
 
         [HttpGet("AllBrand")]//BaseUrl/api/NameControler
+        [Authorize]
+
         public async Task<ActionResult<IEnumerable<BrandTypeDto>>> GetAllBrands()//End Point
         {
             var Result = await productService.GetAllBrandAsync();
@@ -36,6 +42,8 @@ namespace Store.HazemFady.APIs.Controllers
         [ProducesResponseType(typeof(IEnumerable<BrandTypeDto>), StatusCodes.Status200OK)]
 
         [HttpGet("AllType")]//BaseUrl/api/NameControler
+        [Authorize]
+
         public async Task<ActionResult<IEnumerable<BrandTypeDto>>> GetAllTypes()//End Point
         {
             var Result = await productService.GetAllTypeAsync();
@@ -48,6 +56,8 @@ namespace Store.HazemFady.APIs.Controllers
         [ProducesResponseType(typeof(APIErrorResponse), StatusCodes.Status404NotFound)]
 
         [HttpGet("{id}")]//BaseUrl/api/NameControler
+        [Authorize]
+
         public async Task<IActionResult> GetProductById(int? id)//End Point
         {
             if (id == null)
