@@ -1,4 +1,5 @@
 ﻿using Store.HazemFady.Core.Entities;
+using Store.HazemFady.Core.Entities.Order;
 using Store.HazemFady.Repository.Data.Contexts;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,22 @@ namespace Store.HazemFady.Repository.Data
                 if (products is not null && products.Count > 0)
                 {
                     await store.Products.AddRangeAsync((products));
+                    await store.SaveChangesAsync();
+
+                }
+            }
+
+            if (store.DeliveryMethods.Count() == 0)
+            {
+                //1. Read Data From File Json    
+                var deliveryData = File.ReadAllText(@"..\Store.HazemFady.Repository\Data\DataSeed\delivery.json");
+                //2. Convert Json String To List<T>   
+
+                var Deliveryies = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
+                //3. Seed Data To DataBase
+                if (Deliveryies is not null && Deliveryies.Count > 0)
+                {
+                    await store.DeliveryMethods.AddRangeAsync((Deliveryies));
                     await store.SaveChangesAsync();
 
                 }
